@@ -1,855 +1,738 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>The Reflection – AI Role-Play Skill Platform</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="The Reflection is an AI-powered simulation platform for leadership, sales, negotiation and customer service role-plays with instant AI feedback." />
-  <style>
-    :root {
-      --bg: #f5f7fb;
-      --bg-alt: #ffffff;
-      --primary: #345ff6;
-      --primary-soft: rgba(52, 95, 246, 0.12);
-      --text-main: #1f2430;
-      --text-muted: #6b7280;
-      --accent: #22c55e;
-      --border-soft: rgba(15, 23, 42, 0.08);
-      --radius-lg: 22px;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.10);
-      --shadow-card: 0 14px 30px rgba(15, 23, 42, 0.08);
-      --glass: rgba(255, 255, 255, 0.85);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, #e0ebff 0, #f5f7fb 45%, #ffffff 100%);
-      color: var(--text-main);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .page {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 32px 20px 64px;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 40px;
-    }
-
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-mark {
-      width: 38px;
-      height: 38px;
-      border-radius: 14px;
-      background: radial-gradient(circle at 20% 0, #ffffff 0, #93c5fd 35%, #4f46e5 80%);
-      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      font-weight: 700;
-      font-size: 18px;
-      transform: translateZ(0);
-    }
-
-    .logo-text-main {
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      font-size: 18px;
-    }
-
-    .logo-text-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .pill {
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: rgba(255, 255, 255, 0.9);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-muted);
-    }
-
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.25);
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
-      gap: 32px;
-      align-items: center;
-      margin-bottom: 56px;
-    }
-
-    .hero-title {
-      font-size: clamp(32px, 4vw, 42px);
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-
-    .hero-title span {
-      background: linear-gradient(135deg, #2563eb, #4f46e5, #22c55e);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .hero-sub {
-      color: var(--text-muted);
-      font-size: 15px;
-      max-width: 420px;
-      margin-bottom: 22px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .btn {
-      border-radius: 999px;
-      padding: 11px 20px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, opacity 0.18s ease;
-      font-weight: 500;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #2563eb, #4f46e5);
-      color: #ffffff;
-      box-shadow: 0 16px 30px rgba(37, 99, 235, 0.45);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 20px 38px rgba(37, 99, 235, 0.55);
-    }
-
-    .btn-ghost {
-      background: rgba(255, 255, 255, 0.9);
-      color: var(--text-main);
-      border: 1px solid rgba(148, 163, 184, 0.55);
-    }
-
-    .btn-ghost:hover {
-      background: #ffffff;
-      transform: translateY(-1px);
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .hero-meta span {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .check {
-      width: 15px;
-      height: 15px;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: var(--primary);
-    }
-
-    .hero-3d {
-      perspective: 1200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .stack {
-      width: 100%;
-      max-width: 420px;
-      position: relative;
-      transform-style: preserve-3d;
-      transform: rotateY(-15deg) rotateX(10deg);
-      transition: transform 0.6s ease, box-shadow 0.6s ease;
-    }
-
-    .stack:hover {
-      transform: rotateY(-8deg) rotateX(5deg) translateY(-6px);
-    }
-
-    .stack-layer {
-      position: absolute;
-      inset: 0;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: var(--glass);
-      backdrop-filter: blur(16px);
-      box-shadow: var(--shadow-soft);
-      transform-origin: bottom right;
-    }
-
-    .stack-layer:nth-child(1) {
-      transform: translate3d(-12px, 18px, -60px);
-      opacity: 0.35;
-    }
-
-    .stack-layer:nth-child(2) {
-      transform: translate3d(-6px, 10px, -30px);
-      opacity: 0.6;
-    }
-
-    .stack-main {
-      position: relative;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148, 163, 184, 0.55);
-      background: #ffffff;
-      padding: 20px 20px 18px;
-      box-shadow: var(--shadow-card);
-      transform: translateZ(0);
-    }
-
-    .stack-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .stack-bubbles {
-      display: flex;
-      gap: 6px;
-    }
-
-    .stack-bubbles span {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #e5e7eb;
-    }
-
-    .stack-bubbles span:nth-child(1) { background: #f97373; }
-    .stack-bubbles span:nth-child(2) { background: #facc15; }
-    .stack-bubbles span:nth-child(3) { background: #4ade80; }
-
-    .stack-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #111827;
-    }
-
-    .badge {
-      font-size: 11px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: rgba(59, 130, 246, 0.08);
-      color: #1d4ed8;
-      border: 1px solid rgba(59, 130, 246, 0.25);
-    }
-
-    .stack-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 14px;
-      align-items: flex-start;
-    }
-
-    .dialog-box {
-      padding: 12px 12px 10px;
-      border-radius: 14px;
-      background: #f3f4ff;
-      border: 1px solid rgba(129, 140, 248, 0.5);
-      font-size: 12px;
-    }
-
-    .dialog-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #6366f1;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .dialog-line {
-      margin-bottom: 6px;
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-    }
-
-    .dialog-line span {
-      font-size: 10px;
-      opacity: 0.7;
-      margin-top: 3px;
-    }
-
-    .dialog-line p {
-      margin: 0;
-    }
-
-    .metrics-card {
-      border-radius: 16px;
-      border: 1px dashed rgba(148, 163, 184, 0.7);
-      padding: 10px 12px;
-      font-size: 11px;
-      background: #f9fafb;
-    }
-
-    .metrics-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
-      align-items: center;
-    }
-
-    .metrics-label {
-      color: var(--text-muted);
-    }
-
-    .metrics-value {
-      font-weight: 600;
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .tag {
-      border-radius: 999px;
-      padding: 4px 9px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: rgba(255, 255, 255, 0.9);
-      font-size: 10px;
-      color: #4b5563;
-    }
-
-    section {
-      margin-bottom: 52px;
-    }
-
-    .section-title {
-      font-size: 20px;
-      margin-bottom: 8px;
-    }
-
-    .section-sub {
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-bottom: 20px;
-      max-width: 640px;
-    }
-
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .card {
-      border-radius: 18px;
-      padding: 16px 16px 14px;
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
-      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
-      transform-style: preserve-3d;
-    }
-
-    .card:hover {
-      transform: translateY(-6px) translateZ(10px) rotateX(2deg);
-      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.14);
-      border-color: rgba(37, 99, 235, 0.45);
-    }
-
-    .card-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 12px;
-      background: rgba(37, 99, 235, 0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    .card-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .card-text {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .step {
-      position: relative;
-      border-radius: 18px;
-      padding: 16px 16px 14px;
-      background: linear-gradient(145deg, #ffffff, #eef2ff);
-      border: 1px solid rgba(129, 140, 248, 0.4);
-      box-shadow: 0 12px 26px rgba(79, 70, 229, 0.12);
-      overflow: hidden;
-      transform-style: preserve-3d;
-      transition: transform 0.22s ease, box-shadow 0.22s ease;
-    }
-
-    .step:hover {
-      transform: translateY(-6px) translateZ(12px);
-      box-shadow: 0 18px 40px rgba(79, 70, 229, 0.2);
-    }
-
-    .step-num {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #4f46e5;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .step-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .step-text {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .step-orb {
-      position: absolute;
-      right: -18px;
-      top: -18px;
-      width: 60px;
-      height: 60px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 20% 20%, #ffffff 0, #c7d2fe 30%, #4f46e5 70%);
-      opacity: 0.7;
-      mix-blend-mode: multiply;
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-      font-size: 12px;
-    }
-
-    .mini-pill {
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.16);
-      color: #4b5563;
-    }
-
-    .quote {
-      border-radius: 18px;
-      padding: 18px 18px 16px;
-      background: rgba(15, 23, 42, 0.92);
-      color: #e5e7eb;
-      font-size: 13px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .quote::before {
-      content: "“";
-      position: absolute;
-      font-size: 120px;
-      line-height: 1;
-      top: -42px;
-      left: 8px;
-      color: rgba(148, 163, 184, 0.28);
-    }
-
-    .quote-highlight {
-      color: #bfdbfe;
-      font-weight: 500;
-    }
-
-    .quote-author {
-      margin-top: 10px;
-      font-size: 12px;
-      color: #9ca3af;
-    }
-
-    .footer {
-      margin-top: 26px;
-      padding-top: 18px;
-      border-top: 1px solid rgba(148, 163, 184, 0.35);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .footer a {
-      text-decoration: underline;
-      text-decoration-style: dotted;
-    }
-
-    @media (max-width: 880px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .hero-3d {
-        order: -1;
-        margin-bottom: 12px;
-      }
-      .stack {
-        transform: rotateY(-6deg) rotateX(6deg);
-      }
-      .card-grid, .steps-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .page {
-        padding-inline: 16px;
-      }
-      .section-title {
-        font-size: 18px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Reflection - AI Skills Simulation Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基础样式 */
+        :root {
+            --primary-white: #ffffff;
+            --light-bg: #f8fafc;
+            --primary-blue: #1a73e8;
+            --secondary-blue: #4285f4;
+            --accent-blue: #dbeafe;
+            --dark-text: #202124;
+            --light-text: #5f6368;
+            --border-color: #dadce0;
+            --shadow: 0 4px 12px rgba(66, 133, 244, 0.08);
+            --shadow-hover: 0 8px 24px rgba(66, 133, 244, 0.15);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--primary-white);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .text-blue {
+            color: var(--primary-blue);
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 18px 0;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark-text);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .logo-blue {
+            color: var(--primary-blue);
+        }
+        
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: var(--transition);
+            padding: 8px 0;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-blue);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .btn-nav {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid var(--primary-blue);
+        }
+        
+        .btn-nav:hover {
+            background-color: white;
+            color: var(--primary-blue);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 80px;
+            background: linear-gradient(to bottom, var(--primary-white) 0%, var(--light-bg) 100%);
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+        
+        .hero-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--dark-text);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            border: 2px solid var(--primary-blue);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-primary:hover {
+            background-color: white;
+            color: var(--primary-blue);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .hero-image {
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-hover);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+        
+        .hero-image:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(66, 133, 244, 0.2);
+        }
+        
+        .hero-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* 解决方案部分 */
+        .solution-section {
+            padding: 100px 0;
+            background-color: var(--primary-white);
+        }
+        
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--dark-text);
+        }
+        
+        .solution-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .solution-card {
+            background-color: var(--primary-white);
+            border-radius: 12px;
+            padding: 36px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-blue);
+        }
+        
+        .solution-icon {
+            font-size: 48px;
+            color: var(--primary-blue);
+            margin-bottom: 24px;
+        }
+        
+        .solution-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--dark-text);
+        }
+        
+        .solution-card p {
+            color: var(--light-text);
+            line-height: 1.7;
+        }
+        
+        /* Google Cloud部分 */
+        .cloud-section {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .cloud-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+        
+        .cloud-badge:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .cloud-badge i {
+            color: var(--primary-blue);
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .cloud-products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .cloud-product {
+            background-color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .cloud-product:hover {
+            border-color: var(--primary-blue);
+            background-color: var(--accent-blue);
+            transform: translateY(-3px);
+        }
+        
+        /* 功能部分 */
+        .features-section {
+            padding: 100px 0;
+            background-color: var(--primary-white);
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 80px;
+            gap: 60px;
+        }
+        
+        .feature:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .feature-content {
+            flex: 1;
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--primary-blue);
+            font-size: 36px;
+            transition: var(--transition);
+        }
+        
+        .feature:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        .feature h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            color: var(--dark-text);
+        }
+        
+        .feature p {
+            color: var(--light-text);
+            line-height: 1.7;
+        }
+        
+        .feature-image {
+            flex: 1;
+            height: 300px;
+            background-color: var(--light-bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-text);
+            font-weight: 500;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+        
+        .feature-image:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-blue);
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--dark-text);
+            color: white;
+            padding: 70px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-column h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 24px;
+            color: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #bdc1c6;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #3c4043;
+            color: #9aa0a6;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .feature {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .feature:nth-child(even) {
+                flex-direction: column;
+            }
+            
+            .nav-menu {
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.3rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--dark-text);
+                font-size: 24px;
+                cursor: pointer;
+            }
+            
+            .solution-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 140px 0 60px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .btn-primary {
+                padding: 14px 28px;
+            }
+            
+            .solution-card {
+                padding: 28px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <div class="logo-wrap">
-        <div class="logo-mark">R</div>
-        <div>
-          <div class="logo-text-main">The Reflection</div>
-          <div class="logo-text-sub">AI Role-Play Skill Development</div>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">The <span class="logo-blue">Reflection</span></a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#solution" class="nav-link">Our Solution</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#cloud" class="nav-link">Google Cloud</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#" class="btn-nav">Try for Free</a></li>
+            </ul>
         </div>
-      </div>
-      <div class="pill">
-        <span class="pill-dot"></span>
-        Designed for L&amp;D teams
-      </div>
-    </header>
+    </nav>
 
-    <main>
-      <section class="hero">
-        <div>
-          <h1 class="hero-title">
-            AI role-plays that turn <span>conversations</span> into real skills.
-          </h1>
-          <p class="hero-sub">
-            The Reflection is an AI-powered simulation platform where people practice leadership, sales, negotiation and customer service conversations in safe, 5–20 minute role-plays with instant, timeline-based feedback.
-          </p>
-          <div class="hero-actions">
-            <a href="mailto:petr@thereflection.work?subject=The%20Reflection%20demo" class="btn btn-primary">
-              Request a live demo →
-            </a>
-            <a href="https://thereflection.work" target="_blank" rel="noopener" class="btn btn-ghost">
-              Visit product site
-            </a>
-          </div>
-          <div class="hero-meta">
-            <span><span class="check">✓</span>99%+ learner engagement</span>
-            <span><span class="check">✓</span>Launch in minutes, not weeks</span>
-            <span><span class="check">✓</span>AI feedback on every conversation</span>
-          </div>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">AI Role-Plays for <span class="text-blue">Real Skills</span></h1>
+                <p class="hero-subtitle">The Reflection is an AI-powered simulation platform built on Google Cloud, designed to enhance negotiation, sales, leadership, and teamwork skills through immersive, scenario-based role-play training.</p>
+                <a href="#solution" class="btn-primary">Discover Our Platform</a>
+            </div>
+            <!-- 您提供的图片放在这里 -->
+            <div class="hero-image">
+                <img src="https://cdn.prod.website-files.com/6883adc155ad654ab05a729c/68a1c4fb9c1b46607f8272eb_main.avif" 
+                     alt="The Reflection Platform Interface" 
+                     class="hero-img">
+            </div>
         </div>
+    </section>
 
-        <div class="hero-3d">
-          <div class="stack">
-            <div class="stack-layer"></div>
-            <div class="stack-layer"></div>
-
-            <div class="stack-main">
-              <div class="stack-header">
-                <div class="stack-bubbles">
-                  <span></span><span></span><span></span>
+    <!-- 解决方案部分 -->
+    <section id="solution" class="solution-section">
+        <div class="container">
+            <h2 class="section-title">Our <span class="text-blue">Solution</span></h2>
+            <div class="solution-cards">
+                <div class="solution-card">
+                    <div class="solution-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Simulations</h3>
+                    <p>Practice real-world conversations with intelligent AI characters that adapt to your responses, providing a realistic training environment.</p>
                 </div>
-                <div class="stack-title">Leadership coaching – Live simulation</div>
-                <div class="badge">AI Skill Insight</div>
-              </div>
-
-              <div class="stack-grid">
-                <div class="dialog-box">
-                  <div class="dialog-label">Role-play dialogue</div>
-
-                  <div class="dialog-line">
-                    <span>●</span>
-                    <p><strong>You:</strong> I’d like to understand what’s been blocking your progress before we talk deadlines.</p>
-                  </div>
-
-                  <div class="dialog-line">
-                    <span>●</span>
-                    <p><strong>AI Teammate:</strong> Honestly, I’ve felt unsure about priorities and didn’t want to push back.</p>
-                  </div>
-
-                  <div class="dialog-line">
-                    <span>●</span>
-                    <p><strong>You:</strong> Thanks for sharing that. Let’s clarify expectations and agree on the next two milestones together.</p>
-                  </div>
+                <div class="solution-card">
+                    <div class="solution-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Instant Feedback & Analytics</h3>
+                    <p>Receive immediate, actionable insights on your performance with timeline-based feedback highlighting strengths and areas for improvement.</p>
                 </div>
-
-                <div class="metrics-card">
-                  <div class="metrics-row">
-                    <span class="metrics-label">Active listening</span>
-                    <span class="metrics-value">92%</span>
-                  </div>
-                  <div class="metrics-row">
-                    <span class="metrics-label">Empathy &amp; tone</span>
-                    <span class="metrics-value">88%</span>
-                  </div>
-                  <div class="metrics-row">
-                    <span class="metrics-label">Negotiation clarity</span>
-                    <span class="metrics-value">90%</span>
-                  </div>
-                  <div class="tag-row">
-                    <span class="tag">Frame expectations</span>
-                    <span class="tag">Ask open questions</span>
-                    <span class="tag">Align on next steps</span>
-                  </div>
+                <div class="solution-card">
+                    <div class="solution-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Scalable Team Training</h3>
+                    <p>Easily deploy role-play scenarios across your entire organization with an intuitive admin panel designed for L&D teams.</p>
                 </div>
-              </div>
-
             </div>
-          </div>
         </div>
-      </section>
+    </section>
 
-      <section id="use-cases">
-        <h2 class="section-title">Built for real-world performance, not quizzes.</h2>
-        <p class="section-sub">
-          The Reflection complements your LMS/LXP by filling the hardest gap in learning: repeated, realistic practice and actionable feedback on the conversations that matter most.
-        </p>
-
-        <div class="card-grid">
-          <article class="card">
-            <div class="card-icon">👔</div>
-            <h3 class="card-title">Leadership development</h3>
-            <p class="card-text">
-              Let managers rehearse 1:1s, feedback talks and difficult conversations before they happen, with instant insight into empathy, clarity and follow-through.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="card-icon">💼</div>
-            <h3 class="card-title">Sales excellence</h3>
-            <p class="card-text">
-              Train account executives and SDRs on discovery calls, negotiation tactics and objection handling using scenarios that mirror your real pipeline.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="card-icon">💬</div>
-            <h3 class="card-title">Customer service</h3>
-            <p class="card-text">
-              Help support teams move beyond “ticket closed” to moments of loyalty, practicing tone, de-escalation and problem-solving across channels.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section id="how-it-works">
-        <h2 class="section-title">From scenario to skill in three simple steps.</h2>
-        <p class="section-sub">
-          We designed The Reflection so that 92% of users can start without training. L&amp;D teams stay in control of content, language and competencies while learners just press play.
-        </p>
-
-        <div class="steps-grid">
-          <div class="step">
-            <div class="step-orb"></div>
-            <div class="step-num">Step 1</div>
-            <div class="step-title">Select or create a scenario</div>
-            <p class="step-text">
-              Choose from a growing library or generate a custom scenario with our AI builder. Align every simulation to a specific skill, role and difficulty level.
-            </p>
-          </div>
-
-          <div class="step">
-            <div class="step-orb"></div>
-            <div class="step-num">Step 2</div>
-            <div class="step-title">Practice with an AI partner</div>
-            <p class="step-text">
-              Learners join a short, focused role-play with an AI client, teammate or customer. Sessions last 5–20 minutes and fit naturally into a busy workday.
-            </p>
-          </div>
-
-          <div class="step">
-            <div class="step-orb"></div>
-            <div class="step-num">Step 3</div>
-            <div class="step-title">Review instant feedback</div>
-            <p class="step-text">
-              Right on the video timeline, learners see what they did well, where they lost trust, and how to improve on the next attempt—turning reflection into measurable progress.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="teams">
-        <h2 class="section-title">Everything L&amp;D needs to scale practice.</h2>
-        <p class="section-sub">
-          An intuitive admin panel lets a single L&amp;D specialist create practice-driven learning journeys for teams of any size—no production crew or coaching marketplace required.
-        </p>
-
-        <div class="card-grid">
-          <article class="card">
-            <div class="card-icon">📊</div>
-            <h3 class="card-title">Real-time skills insights</h3>
-            <p class="card-text">
-              Track skill gaps at team, role and individual level. Compare cohorts, monitor engagement and export data into your existing reporting stack.
-            </p>
-            <div class="pill-row">
-              <span class="mini-pill">Skills heatmaps</span>
-              <span class="mini-pill">Cohort trends</span>
+    <!-- Google Cloud部分 -->
+    <section id="cloud" class="cloud-section">
+        <div class="container">
+            <div class="cloud-badge">
+                <i class="fab fa-google"></i>
+                <span>Powered by Google Cloud</span>
             </div>
-          </article>
-
-          <article class="card">
-            <div class="card-icon">⚙️</div>
-            <h3 class="card-title">Flexible and configurable</h3>
-            <p class="card-text">
-              Control conversation scripts, scoring models, languages and difficulty tiers so every scenario reflects your culture, playbooks and customer reality.
-            </p>
-            <div class="pill-row">
-              <span class="mini-pill">Multi-language</span>
-              <span class="mini-pill">Custom rubrics</span>
+            <h2 class="section-title">Built on <span class="text-blue">Google Cloud</span></h2>
+            <p>Our platform leverages Google Cloud's secure, scalable infrastructure to deliver reliable, high-performance training experiences worldwide.</p>
+            
+            <div class="cloud-products">
+                <div class="cloud-product">Google Kubernetes Engine</div>
+                <div class="cloud-product">Cloud Run</div>
+                <div class="cloud-product">Vertex AI</div>
+                <div class="cloud-product">Cloud Firestore</div>
+                <div class="cloud-product">Cloud Storage</div>
+                <div class="cloud-product">Google Workspace</div>
+                <div class="cloud-product">Looker Studio</div>
             </div>
-          </article>
+        </div>
+    </section>
 
-          <article class="card">
-            <div class="card-icon">🔒</div>
-            <h3 class="card-title">Secure by design</h3>
-            <p class="card-text">
-              Built on modern cloud infrastructure with strict data separation, encryption and role-based access controls to support enterprise deployments.
-            </p>
-            <div class="pill-row">
-              <span class="mini-pill">SSO-ready</span>
-              <span class="mini-pill">Data minimization</span>
+    <!-- 功能部分 -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title">Key <span class="text-blue">Features</span></h2>
+            
+            <div class="feature">
+                <div class="feature-content">
+                    <div class="feature-icon">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <h3>Just 3 Easy Steps</h3>
+                    <p>Get started in minutes with our simple three-step process: select a scenario, practice with an AI role-play partner, and receive instant feedback.</p>
+                </div>
+                <div class="feature-image">
+                    <div style="text-align: center; padding: 20px;">
+                        <i class="fas fa-mobile-alt" style="font-size: 60px; margin-bottom: 15px; color: var(--primary-blue);"></i>
+                        <div>Simple User Interface</div>
+                    </div>
+                </div>
             </div>
-          </article>
+            
+            <div class="feature">
+                <div class="feature-content">
+                    <div class="feature-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Flexible Scenario Builder</h3>
+                    <p>Choose from our library of pre-built scenarios or create custom ones with our AI-powered scenario builder tailored to your organization's needs.</p>
+                </div>
+                <div class="feature-image">
+                    <div style="text-align: center; padding: 20px;">
+                        <i class="fas fa-shapes" style="font-size: 60px; margin-bottom: 15px; color: var(--primary-blue);"></i>
+                        <div>Custom Scenario Builder</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-content">
+                    <div class="feature-icon">
+                        <i class="fasfa-tachometer-alt"></i>
+                    </div>
+                    <h3>Comprehensive Analytics</h3>
+                    <p>Track team progress, engagement, and skill development with detailed analytics and reporting tools integrated directly into the admin dashboard.</p>
+                </div>
+                <div class="feature-image">
+                    <div style="text-align: center; padding: 20px;">
+                        <i class="fas fa-chart-bar" style="font-size: 60px; margin-bottom: 15px; color: var(--primary-blue);"></i>
+                        <div>Analytics Dashboard</div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </section>
+    </section>
 
-      <section id="quote">
-        <h2 class="section-title">What learning leaders are saying.</h2>
-        <p class="section-sub">
-          Early customers use The Reflection to augment workshops, coaching programs and academies with scalable, always-available practice.
-        </p>
-
-        <div class="quote">
-          <p>
-            <span class="quote-highlight">“Exploring The Reflection has been an inspiring experience.”</span> The platform connects real learning needs with the possibilities of AI—without losing the human dimension at the heart of every meaningful exchange. It makes simulations engaging while delivering concrete, actionable insights after every session.
-          </p>
-          <p class="quote-author">
-            Learning &amp; Development partner, enterprise customer
-          </p>
+    <!-- 联系部分 -->
+    <section id="contact" class="solution-section" style="padding-bottom: 80px;">
+        <div class="container">
+            <h2 class="section-title">Get <span class="text-blue">Started</span></h2>
+            <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+                <p style="font-size: 1.2rem; margin-bottom: 40px; color: var(--light-text);">Experience how The Reflection can transform your organization's training approach. Trusted by 5,000+ professionals worldwide.</p>
+                <a href="#" class="btn-primary" style="font-size: 1.2rem; padding: 18px 45px;">
+                    <i class="fas fa-rocket" style="margin-right: 10px;"></i> Try for Free
+                </a>
+            </div>
         </div>
-      </section>
-    </main>
+    </section>
 
-    <footer class="footer">
-      <span>© <span id="year"></span> The Reflection. All rights reserved.</span>
-      <span>
-        Contact: <a href="mailto:petr@thereflection.work">petr@thereflection.work</a> ·
-        Website: <a href="https://thereflection.work" target="_blank" rel="noopener">thereflection.work</a>
-      </span>
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>The Reflection</h4>
+                    <p style="color: #bdc1c6; line-height: 1.7;">An AI-powered simulation platform built on Google Cloud to transform how organizations develop essential people skills.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#solution">Our Solution</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#cloud">Google Cloud</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:petr@thereflection.work">petr@thereflection.work</a></li>
+                        <li><a href="https://thereflection.work">thereflection.work</a></li>
+                        <li>Google Cloud Build Partner</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 The Reflection. All rights reserved. AI Skills Simulation Platform.</p>
+            </div>
+        </div>
     </footer>
-  </div>
 
-  <script>
-    // Set current year in footer
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // Subtle parallax on mouse move for the hero stack
-    (function () {
-      const stack = document.querySelector(".stack");
-      if (!stack) return;
-
-      const initialRotateX = 10;
-      const initialRotateY = -15;
-
-      function updateTransform(xPercent, yPercent) {
-        const rotateX = initialRotateX + (yPercent - 0.5) * 10;
-        const rotateY = initialRotateY + (xPercent - 0.5) * 10;
-        stack.style.transform =
-          "rotateY(" + rotateY + "deg) rotateX(" + rotateX + "deg)";
-      }
-
-      document.addEventListener("mousemove", function (e) {
-        const xPercent = e.clientX / window.innerWidth;
-        const yPercent = e.clientY / window.innerHeight;
-        updateTransform(xPercent, yPercent);
-      });
-
-      window.addEventListener("mouseout", function () {
-        stack.style.transform =
-          "rotateY(" + initialRotateY + "deg) rotateX(" + initialRotateX + "deg)";
-      });
-    })();
-  </script>
+    <!-- JavaScript -->
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if(window.scrollY > 100) {
+                navbar.style.boxShadow = '0 6px 20px rgba(66, 133, 244, 0.1)';
+                navbar.style.padding = '12px 0';
+            } else {
+                navbar.style.boxShadow = '0 4px 12px rgba(66, 133, 244, 0.08)';
+                navbar.style.padding = '18px 0';
+            }
+        });
+        
+        // 卡片悬浮效果增强
+        document.querySelectorAll('.solution-card, .cloud-product, .feature-image').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.3s ease';
+            });
+        });
+        
+        // 控制台欢迎信息
+        console.log('%c🌟 The Reflection Platform', 'color: #1a73e8; font-size: 18px; font-weight: bold;');
+        console.log('%cAI Skills Simulation Platform built on Google Cloud', 'color: #5f6368; font-size: 14px;');
+    </script>
 </body>
 </html>
